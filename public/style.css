@@ -148,3 +148,34 @@ li.boleto-item.pago {
 .boleto-item a.anexo-link:hover {
     text-decoration: underline;
 }
+
+/* Estilos para telas menores, como celulares */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        flex-direction: column;
+    }
+
+    .form-section,
+    .list-section {
+        width: 100%;
+    }
+
+    .boleto-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .boleto-info,
+    .action-button {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .action-button {
+        margin-left: 0 !important;
+    }
+}
