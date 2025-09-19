@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Boletos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Controle de Boletos Financeiros</h1>
+
+        <div class="card add-boleto-card">
+            <h2>Adicionar Novo Boleto</h2>
+            <form id="boletoForm">
+                <div class="form-group">
+                    <label for="fornecedor">Fornecedor:</label>
+                    <input type="text" id="fornecedor" required>
+                </div>
+                <div class="form-group">
+                    <label for="valor">Valor (R$):</label>
+                    <input type="number" id="valor" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="vencimento">Vencimento:</label>
+                    <input type="date" id="vencimento" required>
+                </div>
+                <div class="form-group">
+                    <label for="anexo">Anexo (PDF):</label>
+                    <input type="file" id="anexo" accept=".pdf">
+                </div>
+                <button type="submit">Adicionar Boleto</button>
+            </form>
+        </div>
+
+        <div class="card boletos-pendentes-card">
+            <h2>Boletos Pendentes</h2>
+            <ul id="boletosList">
+                </ul>
+            <p id="noBoletosMessage" style="text-align: center; color: #666; display: none;">Nenhum boleto pendente.</p>
+        </div>
+
+        <div class="card boletos-pagos-card">
+            <h2>Boletos Pagos</h2>
+            <ul id="boletosPagosList">
+                </ul>
+            <p id="noBoletosPagosMessage" style="text-align: center; color: #666; display: none;">Nenhum boleto pago ainda.</p>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
