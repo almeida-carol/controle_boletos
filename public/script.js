@@ -1,4 +1,4 @@
-// script.js (novo)
+// script.js (versão corrigida para a data)
 
 document.addEventListener('DOMContentLoaded', () => {
     const boletoForm = document.getElementById('boletoForm');
@@ -58,7 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
         li.className = `boleto-item ${boleto.status === 'Pago' ? 'pago' : ''}`;
         li.dataset.id = boleto.id; // Adiciona o ID do banco de dados
 
-        const dataVencimentoFormatada = new Date(boleto.vencimento + 'T00:00:00').toLocaleDateString('pt-BR');
+        // --- AQUI ESTÁ A CORREÇÃO ---
+        const dataVencimentoFormatada = new Date(boleto.vencimento).toLocaleDateString('pt-BR');
+        // --- FIM DA CORREÇÃO ---
+
         const valorFormatado = `R$ ${boleto.valor.toFixed(2).replace('.', ',')}`;
 
         li.innerHTML = `
@@ -83,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
             pagoInfo.style.color = '#4CAF50';
             li.appendChild(pagoInfo);
         }
-    
+
         // Adiciona botão "Remover" APENAS se o boleto estiver pago
         if (boleto.status === 'Pago') {
             const removerButton = document.createElement('button');
@@ -94,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
             removerButton.addEventListener('click', () => removerBoleto(boleto.id));
             li.appendChild(removerButton);
         }
-        
+
         // Adiciona link para anexo se houver
         if (boleto.anexo) {
             const anexoLink = document.createElement('a');
