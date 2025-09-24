@@ -1,4 +1,4 @@
-// script.js (versão corrigida para o valor)
+// script.js (versão corrigida para a URL da API)
 
 document.addEventListener('DOMContentLoaded', () => {
     const boletoForm = document.getElementById('boletoForm');
@@ -7,8 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const noBoletosMessage = document.getElementById('noBoletosMessage');
     const noBoletosPagosMessage = document.getElementById('noBoletosPagosMessage');
 
-    // A URL base da nossa API
-    const API_URL = '/api/boletos';
+    // --- AQUI ESTÁ A CORREÇÃO ---
+    const API_URL = `${window.location.origin}/api/boletos`; // Usa o URL base dinâmico do site
+    // --- FIM DA CORREÇÃO ---
 
     // Função para buscar e renderizar os boletos
     async function fetchAndRenderBoletos() {
@@ -25,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
             boletosPagosList.innerHTML = '';
 
             const boletosPendentes = boletos.filter(b => b.status === 'Pendente');
-            const boletosPagos = boletos.filter(b.status === 'Pago');
+            const boletosPagos = boletos.filter(b => b.status === 'Pago');
 
             if (boletosPendentes.length === 0) {
                 noBoletosMessage.style.display = 'block';
@@ -59,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
         li.dataset.id = boleto.id; // Adiciona o ID do banco de dados
 
         const dataVencimentoFormatada = new Date(boleto.vencimento).toLocaleDateString('pt-BR');
-        // Formata o valor corretamente para exibição
         const valorFormatado = `R$ ${parseFloat(boleto.valor).toFixed(2).replace('.', ',')}`;
 
         li.innerHTML = `
@@ -69,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
 
-        // Adiciona botão "Confirmar Pagamento" se o boleto estiver pendente
         if (boleto.status === 'Pendente') {
             const pagarButton = document.createElement('button');
             pagarButton.textContent = 'Confirmar Pagamento';
@@ -85,18 +84,16 @@ document.addEventListener('DOMContentLoaded', () => {
             li.appendChild(pagoInfo);
         }
 
-        // Adiciona botão "Remover" APENAS se o boleto estiver pago
         if (boleto.status === 'Pago') {
             const removerButton = document.createElement('button');
             removerButton.textContent = 'Remover';
             removerButton.className = 'action-button';
-            removerButton.style.backgroundColor = '#dc3545'; // Cor de remoção
+            removerButton.style.backgroundColor = '#dc3545';
             removerButton.style.marginLeft = '10px';
             removerButton.addEventListener('click', () => removerBoleto(boleto.id));
             li.appendChild(removerButton);
         }
 
-        // Adiciona link para anexo se houver
         if (boleto.anexo) {
             const anexoLink = document.createElement('a');
             anexoLink.href = '#';
@@ -117,11 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
 
         const fornecedor = document.getElementById('fornecedor').value;
-        // --- AQUI ESTÁ A CORREÇÃO ---
         const valorInput = document.getElementById('valor').value;
-        const valorLimpo = valorInput.replace(/\./g, '').replace(',', '.'); // Remove pontos e troca vírgula por ponto
+        const valorLimpo = valorInput.replace(/\./g, '').replace(',', '.');
         const valor = parseFloat(valorLimpo);
-        // --- FIM DA CORREÇÃO ---
         const vencimento = document.getElementById('vencimento').value;
         const anexoInput = document.getElementById('anexo');
         const anexo = anexoInput.files.length > 0 ? anexoInput.files[0].name : null;
@@ -147,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
             console.log("Boleto adicionado com sucesso:", data);
             boletoForm.reset();
-            fetchAndRenderBoletos(); // Re-renderiza a lista
+            fetchAndRenderBoletos();
         } catch (error) {
             console.error('Erro:', error);
             alert('Não foi possível adicionar o boleto.');
@@ -172,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json();
             console.log(data.message);
-            fetchAndRenderBoletos(); // Re-renderiza a lista
+            fetchAndRenderBoletos();
         } catch (error) {
             console.error('Erro:', error);
             alert('Não foi possível marcar o boleto como pago.');
@@ -192,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 console.log('Boleto removido com sucesso.');
-                fetchAndRenderBoletos(); // Re-renderiza a lista para refletir a mudança
+                fetchAndRenderBoletos();
             } catch (error) {
                 console.error('Erro:', error);
                 alert('Não foi possível remover o boleto.');
