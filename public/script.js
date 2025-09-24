@@ -1,4 +1,4 @@
-// script.js (versão corrigida para a data)
+// script.js (versão corrigida para o valor)
 
 document.addEventListener('DOMContentLoaded', () => {
     const boletoForm = document.getElementById('boletoForm');
@@ -58,11 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
         li.className = `boleto-item ${boleto.status === 'Pago' ? 'pago' : ''}`;
         li.dataset.id = boleto.id; // Adiciona o ID do banco de dados
 
-        // --- AQUI ESTÁ A CORREÇÃO ---
         const dataVencimentoFormatada = new Date(boleto.vencimento).toLocaleDateString('pt-BR');
-        // --- FIM DA CORREÇÃO ---
-
-        const valorFormatado = `R$ ${boleto.valor.toFixed(2).replace('.', ',')}`;
+        // Formata o valor corretamente para exibição
+        const valorFormatado = `R$ ${parseFloat(boleto.valor).toFixed(2).replace('.', ',')}`;
 
         li.innerHTML = `
             <div class="boleto-info">
@@ -119,7 +117,11 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
 
         const fornecedor = document.getElementById('fornecedor').value;
-        const valor = parseFloat(document.getElementById('valor').value);
+        // --- AQUI ESTÁ A CORREÇÃO ---
+        const valorInput = document.getElementById('valor').value;
+        const valorLimpo = valorInput.replace(/\./g, '').replace(',', '.'); // Remove pontos e troca vírgula por ponto
+        const valor = parseFloat(valorLimpo);
+        // --- FIM DA CORREÇÃO ---
         const vencimento = document.getElementById('vencimento').value;
         const anexoInput = document.getElementById('anexo');
         const anexo = anexoInput.files.length > 0 ? anexoInput.files[0].name : null;
