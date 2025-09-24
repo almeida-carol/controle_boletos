@@ -1,4 +1,4 @@
-// script.js (versão corrigida para a URL da API)
+// script.js (versão final corrigida para casas decimais)
 
 document.addEventListener('DOMContentLoaded', () => {
     const boletoForm = document.getElementById('boletoForm');
@@ -7,11 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const noBoletosMessage = document.getElementById('noBoletosMessage');
     const noBoletosPagosMessage = document.getElementById('noBoletosPagosMessage');
 
-    // --- AQUI ESTÁ A CORREÇÃO ---
-    const API_URL = `${window.location.origin}/api/boletos`; // Usa o URL base dinâmico do site
-    // --- FIM DA CORREÇÃO ---
+    const API_URL = `${window.location.origin}/api/boletos`;
 
-    // Função para buscar e renderizar os boletos
     async function fetchAndRenderBoletos() {
         try {
             const response = await fetch(API_URL);
@@ -53,11 +50,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Função auxiliar para criar um item de lista de boleto
     function createBoletoListItem(boleto) {
         const li = document.createElement('li');
         li.className = `boleto-item ${boleto.status === 'Pago' ? 'pago' : ''}`;
-        li.dataset.id = boleto.id; // Adiciona o ID do banco de dados
+        li.dataset.id = boleto.id;
 
         const dataVencimentoFormatada = new Date(boleto.vencimento).toLocaleDateString('pt-BR');
         const valorFormatado = `R$ ${parseFloat(boleto.valor).toFixed(2).replace('.', ',')}`;
@@ -109,14 +105,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return li;
     }
 
-    // Função para adicionar um novo boleto
     boletoForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
         const fornecedor = document.getElementById('fornecedor').value;
+        // --- AQUI ESTÁ A CORREÇÃO MAIS SEGURA E O LOG ---
         const valorInput = document.getElementById('valor').value;
         const valorLimpo = valorInput.replace(/\./g, '').replace(',', '.');
         const valor = parseFloat(valorLimpo);
+        console.log("Valor limpo antes de enviar:", valor); // Este log é o que precisamos verificar
+        // --- FIM DA CORREÇÃO ---
         const vencimento = document.getElementById('vencimento').value;
         const anexoInput = document.getElementById('anexo');
         const anexo = anexoInput.files.length > 0 ? anexoInput.files[0].name : null;
@@ -149,7 +147,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Função para marcar um boleto como pago
     async function marcarComoPago(boletoId) {
         try {
             const response = await fetch(`${API_URL}/${boletoId}`, {
@@ -174,7 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Função para remover um boleto permanentemente
     async function removerBoleto(boletoId) {
         if (confirm('Tem certeza que deseja remover este boleto?')) {
             try {
@@ -195,6 +191,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Renderiza os boletos ao carregar a página pela primeira vez
     fetchAndRenderBoletos();
 });
