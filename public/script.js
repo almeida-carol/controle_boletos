@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
             boletosPagosList.innerHTML = '';
 
             const boletosPendentes = boletos.filter(b => b.status === 'Pendente');
-            const boletosPagos = boletos.filter(b => b.status === 'Pago');
+            const boletosPagos = boletos.filter(b.status === 'Pago');
 
             if (boletosPendentes.length === 0) {
                 noBoletosMessage.style.display = 'block';
