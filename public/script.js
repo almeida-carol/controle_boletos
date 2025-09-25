@@ -1,4 +1,4 @@
-// script.js (Versão final para correção de valores decimais)
+// script.js (Versão definitiva para correção de valores decimais)
 document.addEventListener('DOMContentLoaded', () => {
   const boletoForm = document.getElementById('boletoForm');
   const boletosList = document.getElementById('boletosList');
@@ -109,8 +109,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fornecedor = document.getElementById('fornecedor').value;
     const valorInput = document.getElementById('valor').value;
-    const valorLimpo = valorInput.replace(/\./g, '').replace(',', '.');
+
+    // --- AQUI ESTÁ A ÚLTIMA CORREÇÃO ---
+    const valorLimpo = valorInput.replace(/\./g, '').replace(/,/g, '.');
     const valor = parseFloat(valorLimpo);
+    // --- FIM DA CORREÇÃO ---
+
     console.log("Valor numérico final para envio:", valor);
     const vencimento = document.getElementById('vencimento').value;
     const anexoInput = document.getElementById('anexo');
